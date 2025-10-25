@@ -34,6 +34,7 @@ RUN echo 'server.document-root = "/var/www"' > /etc/lighttpd/lighttpd.conf && \
 
 # Make storage persistent via Render disk (optional volume)
 VOLUME ["/var/www/webdav"]
+RUN df -h /
 
 # Use $PORT environment variable if Render provides it
 CMD lighttpd -D -f /etc/lighttpd/lighttpd.conf -m /usr/lib/lighttpd
