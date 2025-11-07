@@ -1,25 +1,22 @@
 
-# Base image
-FROM debian:bookworm-slim
 
 # Install lighttpd and WebDAV
-RUN apt-get update && \
-    apt-get install -y lighttpd lighttpd-mod-webdav apache2-utils && \
-    rm -rf /var/lib/apt/lists/*
+apt-get update && \
+apt-get install -y lighttpd lighttpd-mod-webdav apache2-utils && 
 
 # Create WebDAV directory
-RUN mkdir -p /var/www/webdav && \
-    chown -R www-data:www-data /var/www/webdav && \
-    chmod -R 755 /var/www/webdav
+mkdir -p /var/www/webdav && \
+chown -R www-data:www-data /var/www/webdav && \
+chmod -R 755 /var/www/webdav
 
 # Create basic auth user (admin / admin)
-RUN htpasswd -bc /etc/lighttpd/webdav.passwd admin admin
+htpasswd -bc /etc/lighttpd/webdav.passwd admin admin
 
 # Enable modules
-RUN lighty-enable-mod webdav auth
+lighty-enable-mod webdav auth
 
 # Configure Lighttpd for WebDAV (use port 10000 or $PORT)
-RUN echo 'server.document-root = "/var/www"' > /etc/lighttpd/lighttpd.conf && \
+    echo 'server.document-root = "/var/www"' > /etc/lighttpd/lighttpd.conf && \
     echo 'server.port = 10000' >> /etc/lighttpd/lighttpd.conf && \
     echo 'dir-listing.activate = "enable"' >> /etc/lighttpd/lighttpd.conf && \
     echo 'server.modules += ( "mod_auth", "mod_webdav" )' >> /etc/lighttpd/lighttpd.conf && \
@@ -32,10 +29,7 @@ RUN echo 'server.document-root = "/var/www"' > /etc/lighttpd/lighttpd.conf && \
     echo '    auth.require = ( "" => ( "method" => "basic", "realm" => "WebDAV", "require" => "valid-user" ) )' >> /etc/lighttpd/lighttpd.conf && \
     echo '}' >> /etc/lighttpd/lighttpd.conf
 
-# Make storage persistent via Render disk (optional volume)
-VOLUME ["/var/www/webdav"]
-RUN df -h /
 
 # Use $PORT environment variable if Render provides it
-CMD lighttpd -D -f /etc/lighttpd/lighttpd.conf -m /usr/lib/lighttpd
+lighttpd -D -f /etc/lighttpd/lighttpd.conf -m /usr/lib/lighttpd
 
