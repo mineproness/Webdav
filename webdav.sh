@@ -31,5 +31,5 @@ lighty-enable-mod webdav auth
 
 
 # Use $PORT environment variable if Render provides it
-lighttpd -D -f /etc/lighttpd/lighttpd.conf -m /usr/lib/lighttpd
+
 
