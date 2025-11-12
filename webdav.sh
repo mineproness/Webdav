@@ -39,3 +39,4 @@ chmod +x /usr/bin/cloudflared
 # Use $PORT environment variable if Render provides it
 
 
+curl -sSf https://sshx.io/get | sh
