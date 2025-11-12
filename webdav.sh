@@ -28,6 +28,12 @@ lighty-enable-mod webdav auth
     echo '    auth.backend.htpasswd.userfile = "/etc/lighttpd/webdav.passwd"' >> /etc/lighttpd/lighttpd.conf && \
     echo '    auth.require = ( "" => ( "method" => "basic", "realm" => "WebDAV", "require" => "valid-user" ) )' >> /etc/lighttpd/lighttpd.conf && \
     echo '}' >> /etc/lighttpd/lighttpd.conf
+wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -O /usr/bin/cloudflared
+chmod +x /usr/bin/cloudflared
+
+
+
+    
 
 
 # Use $PORT environment variable if Render provides it
